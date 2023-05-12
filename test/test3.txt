@@ -1,0 +1,15 @@
+Pgm{
+    VAR{
+        INTEGER A;
+        INTEGER B;
+        FLOAT C;
+        FLOAT D;
+        CONST E = (-14);
+        CONST F = (-16000);
+        INTEGER array[54];
+
+    }
+    CODE{
+        array[A] = array[B];
+    }
+}
