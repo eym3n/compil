@@ -12,7 +12,7 @@ Pgm{
     }
     CODE{
         array[10] = array[A] + array[2];
-        %% A = ((15/3) + B) * ((C - 10) / C) + D / 2;
+        A = ((15/3) + B) * ((C - 10) / C) + D / 2;
 
         IF(array[i] >= 10){
             FOR(A:0:1:D){
