@@ -42,21 +42,16 @@ CODE SEGMENT
 	MOV SI, 2h
 	ADD SI, SI
 	ADD AX, array[SI]
-	MOV t0, AX
-	MOV AX, t0
 	MOV SI, ah
 	ADD SI, SI
 	MOV array[SI], AX
+	MOV t0, AX
 	MOV AX, fh
 	DIV AX, 3h
-	MOV t1, AX
-	MOV AX, t1
 	ADD AX, B
 	MOV t2, AX
 	MOV AX, C
 	SUB AX, ah
-	MOV t3, AX
-	MOV AX, t3
 	DIV AX, C
 	MOV t4, AX
 	MOV AX, t2
@@ -67,8 +62,6 @@ CODE SEGMENT
 	MOV t6, AX
 	MOV AX, t5
 	ADD AX, t6
-	MOV t7, AX
-	MOV AX, t7
 	MOV A, AX
 	MOV SI, i
 	ADD SI, SI
@@ -86,18 +79,15 @@ E1:
 	JE E2
 	MOV A, 0h
 	JMP E3
-	MOV AX, A
 	ADD AX, 1h
-	MOV A, AX
 E3:
 	MOV AX, A
 	MOV BX, D
 	CMP AX, BX
 	JA E4
+	MOV A, AX
 	MOV AX, D
 	MUL AX, A
-	MOV t9, AX
-	MOV AX, t9
 	MOV A, AX
 	JMP E5
 E4:
@@ -121,9 +111,9 @@ E8:
 E9:
 	MOV t11, 0h
 E10:
+	MOV A, AX
 	MOV AX, t10
 	MUL AX, t11
-	MOV t12, AX
 	MOV BX, t12
 	CMP BX, 0h
 	JE E11
@@ -135,9 +125,9 @@ E12:
 	MOV BX, t13
 	CMP BX, 0h
 	JE E13
+	MOV t12, AX
 	MOV AX, A
 	SUB AX, 4h
-	MOV t14, AX
 	MOV BX, t14
 	CMP BX, 0h
 	JNE E14
@@ -150,12 +140,10 @@ E15:
 	CMP BX, 0h
 	JE E16
 	MOV B, 63h
+	MOV t14, AX
 	MOV AX, B
 	SUB AX, D
-	MOV t16, AX
-	MOV AX, t16
 	SUB AX, fh
-	MOV t17, AX
 	MOV BX, t17
 	CMP BX, 0h
 	JNE E17
@@ -174,10 +162,9 @@ E19:
 E16:
 	JMP E2
 E13:
+	MOV t17, AX
 	MOV AX, A
 	ADD AX, 1h
-	MOV t19, AX
-	MOV AX, t19
 	MOV A, AX
 E6:
 	MOV AH, 4Ch

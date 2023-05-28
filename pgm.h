@@ -202,6 +202,20 @@ void arr_to_qsm(FILE* fptr, char* op){
 
 
 int e = 0;
+char* ax;
+
+int in_acc(char* var, FILE* fptr){
+    
+    if(ax == NULL) return 0;
+
+    if(strcmp(var, ax)==0){
+        return 1;
+    }
+    else{
+        fprintf(fptr, "\tMOV %s, AX\n", ax);
+        return 0;
+    }
+}
 
 
 void qdr_to_asm(FILE* fptr, int i){
@@ -226,13 +240,23 @@ void qdr_to_asm(FILE* fptr, int i){
         else{
             if(is_array(op1)){
                 arr_to_qsm(fptr, op1);
+                fprintf(fptr, "\tMOV AX, %s\n", op1);
             }
-            fprintf(fptr, "\tMOV AX, %s\n", op1);
+            else{
+                if(!in_acc(op1, fptr)){
+                    fprintf(fptr, "\tMOV AX, %s\n", op1);
+                }
+                
+            }
 
             if(is_array(res)){
                 arr_to_qsm(fptr, res);
+                fprintf(fptr, "\tMOV %s, AX\n", res);
             }
-            fprintf(fptr, "\tMOV %s, AX\n", res);
+            else{
+                fprintf(fptr, "\tMOV %s, AX\n", res);
+                ax = strdup(res);
+            }
         }
     }
     else if(strcmp(oper, "BR") == 0){
@@ -473,9 +497,15 @@ void qdr_to_asm(FILE* fptr, int i){
 
         if(is_array(op1)){
             arr_to_qsm(fptr, op1);
+            fprintf(fptr, "\tMOV AX, %s\n", op1);
+        }
+        else{
+            if(!in_acc(op1, fptr)){
+                fprintf(fptr, "\tMOV AX, %s\n", op1);
+            }
         }
 
-        fprintf(fptr, "\tMOV AX, %s\n", op1);
+        
 
         if(is_array(op2)){
             arr_to_qsm(fptr, op2);
@@ -485,9 +515,13 @@ void qdr_to_asm(FILE* fptr, int i){
 
         if(is_array(res)){
             arr_to_qsm(fptr, res);
+            fprintf(fptr, "\tMOV %s, AX\n", res);
+        }
+        else{
+            ax = strdup(res);
         }
 
-        fprintf(fptr, "\tMOV %s, AX\n", res);
+        
     }
     else if(strcmp(oper, "-") == 0){
 
@@ -504,9 +538,13 @@ void qdr_to_asm(FILE* fptr, int i){
 
         if(is_array(op1)){
             arr_to_qsm(fptr, op1);
+            fprintf(fptr, "\tMOV AX, %s\n", op1);
         }
-
-        fprintf(fptr, "\tMOV AX, %s\n", op1);
+        else{
+            if(!in_acc(op1, fptr)){
+                fprintf(fptr, "\tMOV AX, %s\n", op1);
+            }
+        }
 
         if(is_array(op2)){
             arr_to_qsm(fptr, op2);
@@ -516,9 +554,11 @@ void qdr_to_asm(FILE* fptr, int i){
 
         if(is_array(res)){
             arr_to_qsm(fptr, res);
+            fprintf(fptr, "\tMOV %s, AX\n", res);
         }
-
-        fprintf(fptr, "\tMOV %s, AX\n", res);
+        else{
+            ax = strdup(res);
+        }
     }
     else if(strcmp(oper, "*") == 0){
 
@@ -535,9 +575,13 @@ void qdr_to_asm(FILE* fptr, int i){
 
         if(is_array(op1)){
             arr_to_qsm(fptr, op1);
+            fprintf(fptr, "\tMOV AX, %s\n", op1);
         }
-
-        fprintf(fptr, "\tMOV AX, %s\n", op1);
+        else{
+            if(!in_acc(op1, fptr)){
+                fprintf(fptr, "\tMOV AX, %s\n", op1);
+            }
+        }
 
         if(is_array(op2)){
             arr_to_qsm(fptr, op2);
@@ -547,9 +591,11 @@ void qdr_to_asm(FILE* fptr, int i){
 
         if(is_array(res)){
             arr_to_qsm(fptr, res);
+            fprintf(fptr, "\tMOV %s, AX\n", res);
         }
-
-        fprintf(fptr, "\tMOV %s, AX\n", res);
+        else{
+            ax = strdup(res);
+        }
     }
     else if(strcmp(oper, "/") == 0){
 
@@ -566,9 +612,13 @@ void qdr_to_asm(FILE* fptr, int i){
 
         if(is_array(op1)){
             arr_to_qsm(fptr, op1);
+            fprintf(fptr, "\tMOV AX, %s\n", op1);
         }
-
-        fprintf(fptr, "\tMOV AX, %s\n", op1);
+        else{
+            if(!in_acc(op1, fptr)){
+                fprintf(fptr, "\tMOV AX, %s\n", op1);
+            }
+        }
 
         if(is_array(op2)){
             arr_to_qsm(fptr, op2);
@@ -578,9 +628,11 @@ void qdr_to_asm(FILE* fptr, int i){
 
         if(is_array(res)){
             arr_to_qsm(fptr, res);
+            fprintf(fptr, "\tMOV %s, AX\n", res);
         }
-
-        fprintf(fptr, "\tMOV %s, AX\n", res);
+        else{
+            ax = strdup(res);
+        }
     }
 }
 
