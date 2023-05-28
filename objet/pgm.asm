@@ -53,15 +53,11 @@ CODE SEGMENT
 	MOV AX, C
 	SUB AX, ah
 	DIV AX, C
-	MOV t4, AX
-	MOV AX, t2
-	MUL AX, t4
+	MUL AX, t2
 	MOV t5, AX
 	MOV AX, D
 	DIV AX, 2h
-	MOV t6, AX
-	MOV AX, t5
-	ADD AX, t6
+	ADD AX, t5
 	MOV A, AX
 	MOV SI, i
 	ADD SI, SI
@@ -85,9 +81,7 @@ E3:
 	MOV BX, D
 	CMP AX, BX
 	JA E4
-	MOV A, AX
-	MOV AX, D
-	MUL AX, A
+	MUL AX, D
 	MOV A, AX
 	JMP E5
 E4:

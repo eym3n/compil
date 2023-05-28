@@ -220,6 +220,12 @@ int in_acc(char* var, FILE* fptr){
 
 void qdr_to_asm(FILE* fptr, int i){
 
+    if(ax != NULL && (strcmp(quad[i].oper, "+") == 0 || strcmp(quad[i].oper, "*") == 0) && strcmp(quad[i].op2, ax) == 0){
+        char* temp = strdup(quad[i].op2);
+        sprintf(quad[i].op2, "%s", quad[i].op1);
+        sprintf(quad[i].op1, "%s", temp);
+    }
+
     char* op1 = strdup(quad[i].op1);
     char* op2 = strdup(quad[i].op2);
     char* res = strdup(quad[i].res);
