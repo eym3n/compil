@@ -669,52 +669,52 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 YY_RULE_SETUP
 #line 21 "lexical.l"
-{rechercher (yytext,"Mot cle "," ",0, 1); col+= strlen(yytext); return mc_var;}
+{lookup (yytext,"Mot cle "," ",0, 1); col+= strlen(yytext); return mc_var;}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
 #line 22 "lexical.l"
-{rechercher (yytext,"Mot cle "," ",0, 1); col+= strlen(yytext); return mc_code;}
+{lookup (yytext,"Mot cle "," ",0, 1); col+= strlen(yytext); return mc_code;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
 #line 23 "lexical.l"
-{rechercher (yytext,"Mot cle "," ",0, 1); col+= strlen(yytext); return mc_integer;}
+{lookup (yytext,"Mot cle "," ",0, 1); col+= strlen(yytext); return mc_integer;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
 #line 24 "lexical.l"
-{rechercher (yytext,"Mot cle "," ",0, 1); col+= strlen(yytext); return mc_float;}
+{lookup (yytext,"Mot cle "," ",0, 1); col+= strlen(yytext); return mc_float;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
 #line 25 "lexical.l"
-{rechercher (yytext,"Mot cle "," ",0, 1); col+= strlen(yytext); return mc_const;}
+{lookup (yytext,"Mot cle "," ",0, 1); col+= strlen(yytext); return mc_const;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
 #line 26 "lexical.l"
-{rechercher (yytext,"Mot cle "," ",0, 1); col+= strlen(yytext); return mc_struct;}
+{lookup (yytext,"Mot cle "," ",0, 1); col+= strlen(yytext); return mc_struct;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
 #line 27 "lexical.l"
-{rechercher (yytext,"Mot cle "," ",0, 1); col+= strlen(yytext); return mc_if;}
+{lookup (yytext,"Mot cle "," ",0, 1); col+= strlen(yytext); return mc_if;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
 #line 28 "lexical.l"
-{rechercher (yytext,"Mot cle "," ",0, 1); col+= strlen(yytext); return mc_else;}
+{lookup (yytext,"Mot cle "," ",0, 1); col+= strlen(yytext); return mc_else;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
 #line 29 "lexical.l"
-{rechercher (yytext,"Mot cle "," ",0, 1); col+= strlen(yytext); return mc_for;}
+{lookup (yytext,"Mot cle "," ",0, 1); col+= strlen(yytext); return mc_for;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
 #line 30 "lexical.l"
-{rechercher (yytext,"Mot cle "," ",0, 1); col+= strlen(yytext); return mc_while;}
+{lookup (yytext,"Mot cle "," ",0, 1); col+= strlen(yytext); return mc_while;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
@@ -723,7 +723,7 @@ YY_RULE_SETUP
                     col+= strlen(yytext); 
                     int temp = (yytext[0] == '(') ? atoi(yytext+1) : atoi(yytext);
                     if( temp <= 32767 && temp >= -32768 ){
-                        rechercher(yytext,"CST","INTEGER", temp, 0); 
+                        lookup(yytext,"CST","INTEGER", temp, 0); 
                         yylval.entier= temp;
                         return cstInt;
                     }
@@ -735,7 +735,7 @@ YY_RULE_SETUP
 #line 43 "lexical.l"
 {
                     float temp = (yytext[0] == '(') ? atof(yytext+1) : atof(yytext);
-                    rechercher(yytext,"CST","FLOAT",temp, 0);
+                    lookup(yytext,"CST","FLOAT",temp, 0);
                     yylval.reel= atof(yytext); 
                     col+= strlen(yytext); 
                     return cstReel;
@@ -750,7 +750,7 @@ case 14:
 YY_RULE_SETUP
 #line 51 "lexical.l"
 {
-                rechercher (yytext,"IDF","",0, 0); 
+                lookup (yytext,"IDF","",0, 0); 
                 col+= strlen(yytext);
                 if (yyleng<=8) {
                     yylval.str=strdup(yytext);
@@ -762,122 +762,122 @@ YY_RULE_SETUP
 case 15:
 YY_RULE_SETUP
 #line 62 "lexical.l"
-{rechercher (yytext,"Separateur",0,0, 2); col++; return par_1;}
+{lookup (yytext,"Separateur",0,0, 2); col++; return par_1;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
 #line 63 "lexical.l"
-{rechercher (yytext,"Separateur",0,0, 2); col++; return par_2;}
+{lookup (yytext,"Separateur",0,0, 2); col++; return par_2;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
 #line 64 "lexical.l"
-{rechercher (yytext,"Separateur",0,0, 2); col++; return acc_1;}
+{lookup (yytext,"Separateur",0,0, 2); col++; return acc_1;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
 #line 65 "lexical.l"
-{rechercher (yytext,"Separateur",0,0, 2); col++; return acc_2;}
+{lookup (yytext,"Separateur",0,0, 2); col++; return acc_2;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
 #line 66 "lexical.l"
-{rechercher (yytext,"Separateur",0,0, 2); col++; return virgule;}
+{lookup (yytext,"Separateur",0,0, 2); col++; return virgule;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
 #line 67 "lexical.l"
-{rechercher (yytext,"Separateur",0,0, 2); col++; return p_virgule;}
+{lookup (yytext,"Separateur",0,0, 2); col++; return p_virgule;}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
 #line 68 "lexical.l"
-{rechercher (yytext,"Separateur",0,0, 2); col++; return bracket_1;}
+{lookup (yytext,"Separateur",0,0, 2); col++; return bracket_1;}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
 #line 69 "lexical.l"
-{rechercher (yytext,"Separateur",0,0, 2); col++; return bracket_2;}
+{lookup (yytext,"Separateur",0,0, 2); col++; return bracket_2;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
 #line 70 "lexical.l"
-{rechercher (yytext,"Separateur",0,0, 2); col++; return aff;}
+{lookup (yytext,"Separateur",0,0, 2); col++; return aff;}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
 #line 71 "lexical.l"
-{rechercher (yytext,"Separateur",0,0, 2); col++; return point;}
+{lookup (yytext,"Separateur",0,0, 2); col++; return point;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
 #line 72 "lexical.l"
-{rechercher (yytext,"Separateur",0,0, 2); col++; return d_point;}
+{lookup (yytext,"Separateur",0,0, 2); col++; return d_point;}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
 #line 74 "lexical.l"
-{rechercher (yytext,"Separateur",0,0, 2); col++; return plus;}
+{lookup (yytext,"Separateur",0,0, 2); col++; return plus;}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
 #line 75 "lexical.l"
-{rechercher (yytext,"Separateur",0,0, 2); col++; return minus;}
+{lookup (yytext,"Separateur",0,0, 2); col++; return minus;}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
 #line 76 "lexical.l"
-{rechercher (yytext,"Separateur",0,0, 2); col++; return multi;}
+{lookup (yytext,"Separateur",0,0, 2); col++; return multi;}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
 #line 77 "lexical.l"
-{rechercher (yytext,"Separateur",0,0, 2); col++; return divi;}
+{lookup (yytext,"Separateur",0,0, 2); col++; return divi;}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
 #line 79 "lexical.l"
-{rechercher (yytext,"Separateur",0,0, 2); col+= strlen(yytext);; return and;}
+{lookup (yytext,"Separateur",0,0, 2); col+= strlen(yytext);; return and;}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
 #line 80 "lexical.l"
-{rechercher (yytext,"Separateur",0,0, 2); col+= strlen(yytext);; return or;}
+{lookup (yytext,"Separateur",0,0, 2); col+= strlen(yytext);; return or;}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
 #line 81 "lexical.l"
-{rechercher (yytext,"Separateur",0,0, 2); col+= strlen(yytext);; return not;}
+{lookup (yytext,"Separateur",0,0, 2); col+= strlen(yytext);; return not;}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
 #line 83 "lexical.l"
-{rechercher (yytext,"Separateur",0,0, 2); col+= strlen(yytext);; return gt;}
+{lookup (yytext,"Separateur",0,0, 2); col+= strlen(yytext);; return gt;}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
 #line 84 "lexical.l"
-{rechercher (yytext,"Separateur",0,0, 2); col+= strlen(yytext);; return get;}
+{lookup (yytext,"Separateur",0,0, 2); col+= strlen(yytext);; return get;}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
 #line 85 "lexical.l"
-{rechercher (yytext,"Separateur",0,0, 2); col+= strlen(yytext);; return lt;}
+{lookup (yytext,"Separateur",0,0, 2); col+= strlen(yytext);; return lt;}
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
 #line 86 "lexical.l"
-{rechercher (yytext,"Separateur",0,0, 2); col+= strlen(yytext);; return let;}
+{lookup (yytext,"Separateur",0,0, 2); col+= strlen(yytext);; return let;}
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
 #line 87 "lexical.l"
-{rechercher (yytext,"Separateur",0,0, 2); col+= strlen(yytext);; return eq;}
+{lookup (yytext,"Separateur",0,0, 2); col+= strlen(yytext);; return eq;}
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
 #line 88 "lexical.l"
-{rechercher (yytext,"Separateur",0,0, 2); col+= strlen(yytext);; return neq;}
+{lookup (yytext,"Separateur",0,0, 2); col+= strlen(yytext);; return neq;}
 	YY_BREAK
 case 39:
 YY_RULE_SETUP

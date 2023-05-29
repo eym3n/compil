@@ -1732,7 +1732,7 @@ yyreduce:
             for(int j=0; j<i; j++) {
                 char temp[50];
                 sprintf(temp, "%s.%s", (yyvsp[(5) - (6)].str), sauvIdf[j]);
-                rechercher (temp,"IDF","",0, 0); 
+                lookup (temp,"IDF","",0, 0); 
                 insererTYPE(temp, sauvType[j]);
                 setParent(temp, (yyvsp[(5) - (6)].str));
                 setArraySize(temp, sauvTaille[j]);

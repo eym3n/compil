@@ -157,7 +157,7 @@ void inserer(char entite[], char code[], char type[], float val, int i, int y)
     }
 }
 
-void rechercher(char entite[], char code[], char type[], float val, int y)
+void lookup(char entite[], char code[], char type[], float val, int y)
 {
     int i;
     if(type != NULL && strcmp(type, "FLOAT") == 0) y = 0;
@@ -397,7 +397,7 @@ void insertStruct(char* entite, char* structName){
 
     while(t != NULL && strcmp(t->elt.parent, structName) == 0){
         sprintf(childAttributes[i], "%s.%s", entite, t->elt.name + strlen(structName) + 1);
-        rechercher (childAttributes[i],"IDF",t->elt.type,0, 0); 
+        lookup (childAttributes[i],"IDF",t->elt.type,0, 0); 
         setArraySize(childAttributes[i], t->elt.size);
         t = t->nxt;
         i++;
