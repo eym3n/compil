@@ -1,28 +1,6 @@
 #include <string.h>
 #include <stdio.h>
-
-
-int is_array(char* op){
-    return strstr(op, "[") != NULL;
-}
-
-
-void array_elements(char* op, char* arr, char* ind){
-    int i = 0;
-    while(op[i] != '['){
-        arr[i] = op[i];
-        i++;
-    }
-    arr[i] = '\0';
-
-    i++;
-    int j = 0;
-    while(op[i+j] != ']'){
-        ind[j] = op[i+j];
-        j++;
-    }
-    ind[j] = '\0';
-}
+#include "pgm.h"
 
 int main(){
     char temp[50] = "array[array]";

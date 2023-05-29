@@ -10,6 +10,7 @@ Pgm{
 
     }
     CODE{
-        array[A] = array[B];
+        A = A + B;
+        B = A - B;
     }
 }

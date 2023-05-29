@@ -213,7 +213,7 @@ STRUCTDEF: STRCT acc_1 STRUCTDEFLIST acc_2 idf p_virgule {
             for(int j=0; j<i; j++) {
                 char temp[50];
                 sprintf(temp, "%s.%s", $5, sauvIdf[j]);
-                rechercher (temp,"IDF","",0, 0); 
+                lookup (temp,"IDF","",0, 0); 
                 insererTYPE(temp, sauvType[j]);
                 setParent(temp, $5);
                 setArraySize(temp, sauvTaille[j]);
