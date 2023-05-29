@@ -19,15 +19,15 @@ CODE SEGMENT
 	MOV A, 1h
 	MOV AX, 1h
 	ADD AX, 1h
-	MOV B, AX
+	MOV B, AX ---
 	MOV B, AX
 	MOV AX, t0
-	MOV C, AX
+	MOV C, AX ---
 	MOV D, 1h
 	MOV C, AX
 	MOV AX, 1h
 	ADD AX, 2h
-	MOV E, AX
+	MOV E, AX ---
 	MOV AH, 4Ch
 	INT 21h
 CODE ENDS

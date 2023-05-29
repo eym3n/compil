@@ -238,8 +238,6 @@ void qdr_to_asm(FILE* fptr, int i){
     char* oper = strdup(quad[i].oper);
     char* etq = strdup(quad[i].etq);
 
-    printf("- %s %s %s %s\n",oper,op1,op2,res);
-
     if(strcmp(etq, "") != 0){
         fprintf(fptr, "%s:\n", etq);
     }
@@ -752,7 +750,6 @@ void Elimination_useless_code() {
     printf("\t\t< === Elimination of useless code : === >\n");
     int i = 0;
     while(i<qc) {
-        printf("%d %s - ",!exists(quad[i].res),quad[i].res);
         if(!exists(quad[i].res)) {
            used = 0;
            for(int j=i+1; j<qc; j++) {
@@ -761,7 +758,6 @@ void Elimination_useless_code() {
            if(!used) {
                printf(" Useless : %s := %s \n",quad[i].res,quad[i].op1);
                removeQuad(i);
-
            }
            else {
                i++;
@@ -769,116 +765,4 @@ void Elimination_useless_code() {
         }
         else i++;
     }
-}
-// =======================================================================================================
-// =======================================================================================================
-// =======================================================================================================
-// =======================================================================================================
-// Optimisation (By Ayoub)
-void shift(int pos) {
-  for (int i = pos; i < qc - 1; i++) {
-    strcpy(quad[i].oper, quad[i+1].oper);
-    strcpy(quad[i].op1, quad[i+1].op1);
-    strcpy(quad[i].op2, quad[i+1].op2);
-    strcpy(quad[i].res, quad[i+1].res);
-  }
-  qc--;
-}
-
-void Propagation_de_expression() 
-{
-  printf("-optimization propogation de expression common \n-");
-  /*the concept in which optimization of expression common is based on*/
-  qdr *p;
-  qdr *ps;
-  qdr *pf;
-  qdr *p1=quad;
-  qdr *p2=quad;
-  qdr *p3=quad;
-  //VARIABLE TO SAVE OP1 AND OP2 AND OPR AND RESULTS
-  char OPER[200];
-  char OP1[200];
-  char OP2[200];
-  char RES[200];
-  char RES2[200];
-  int mod=0;
-  int nb_shifted=0;
-  for(int i=0;i<qc;i++)
-  {
-    p = &p1[i];
-    printf("|p[%d]=(%s,%s,%s,%s)\n",i,p->oper,p->op1,p->op2,p->res);
-    //save p attributes
-    //check if the quad isnt Branchement quad or an AFF(=) quadruple
-    if(strcmp(p->oper ,":=")!=0 && strcmp(p->oper ,"BZ")!=0 && strcmp(p->oper ,"BR")!=0 )
-    {
-      for(int j=i+1;j<qc;j++)
-      {
-        ps=&p2[j];
-          strcpy(OPER, p->oper) ;
-    	    strcpy(OP1 , p->op1) ;
-    	    strcpy(OP2 , p->op2) ;
-    	    strcpy(RES , p->res) ;
-          if((strcmp(ps->res ,OP1)!=0 && strcmp(ps->res ,OP2)!=0))
-          {
-            if((strcmp(ps->op1 ,OP1)==0 && strcmp(ps->op2 ,OP2)==0 && strcmp(ps->oper ,OPER)==0) || (strcmp(ps->op1 ,OP2)==0 && strcmp(ps->op2 ,OP1)==0 && strcmp(ps->oper ,OPER)==0))
-    			{
-            int k=j+1;
-            strcpy(RES2,ps->res);
-            for(k;k<qc;k++)
-            {
-              pf=&p3[k];
-              printf("\t\t\t\t\t\t|OLD:p[%d]=(%s,%s,%s,%s)\n",k,pf->oper,pf->op1,pf->op2,pf->res);
-              if(strcmp(pf->op1 ,RES2)==0 )
-    					{
-    							strcpy(pf->op1,RES) ;
-    							mod =1;
-    					}
-    					if(strcmp(pf->op2 ,RES2)==0)
-    					{
-    							strcpy(pf->op2,RES) ;
-    							mod =1;
-    					}
-              printf("\t\t\t\t\t\t|NEW:p[%d]=(%s,%s,%s,%s)\n",k,pf->oper,pf->op1,pf->op2,pf->res);
-            }
-            if(mod==1)
-            {
-        	    printf("\t \t \t \t  \tAfter the nested loop, there is a conditional statement that checks if the current instruction is not the first instruction\n\t \t \t \t \t(listeQdr) and whether any changes (mod) have been made to the instruction. If these conditions are met,\n\t \t \t \t \tthe current instruction is removed from the list.\n");
-              printf("\t \t \t \t  \tremove instruction at %d \n",j);
-              shift(j); 
-              nb_shifted++; 
-           }
-          }
-        }
-    }
-  }
-  }
-  printf("\t \t \tsecond part of function fixes the adressage of BZ and BR\n");
-  p1=quad;
-  p2=quad;
-  p=&p1[0];
-  ps=&p2[0];
-  int value;
-  char str[10];
-  //printf("\t \t \tp[%d]=(%s,%s,%s,%s)\n", 0, p->oper, p->op1, p->op2, p->res);
-  //printf("\t \t \tps[%d]=(%s,%s,%s,%s)\n", 0, ps->oper, ps->op1, ps->op2, ps->res);
-  printf("\t\t\tshifted=%d\n",nb_shifted);
-  if(nb_shifted>0)
-  {
-    //loop throught the quads
-    //if its branchement BR or branchement BZ decrement the op1 by nb_shifted
-    for(int i=0;i<qc;i++)
-    {
-      p=&p1[i];
-      if(strcmp(p->oper ,"BZ")==0 || strcmp(p->oper ,"BR")==0 )
-      {
-        printf("\t \t \tp[%d]=(%s,%s,%s,%s)\n", i, p->oper, p->op1, p->op2, p->res);
-        value=atoi(p->op1);
-        printf("\t\t\tvalue=%d\n",value);
-        value=value-nb_shifted;
-        printf("\t\t\tvalue_new=%d\n",value);
-        sprintf(str,"%d",value);
-        strcpy(p->op1,str);
-      }
-    }
-  }
 }
