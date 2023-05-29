@@ -226,6 +226,11 @@ void qdr_to_asm(FILE* fptr, int i){
         sprintf(quad[i].op1, "%s", temp);
     }
 
+    // if(ax != NULL && ((strcmp(quad[0].op1, ax) == 0 || strcmp(quad[0].op2, ax) == 0) || quad[i].oper[0] == 'B')){
+    //     fprintf(fptr, "\tMOV %s, AX\n", ax);
+    //     ax = NULL;
+    // }
+
     char* op1 = strdup(quad[i].op1);
     char* op2 = strdup(quad[i].op2);
     char* res = strdup(quad[i].res);
@@ -298,6 +303,10 @@ void qdr_to_asm(FILE* fptr, int i){
                 arr_to_qsm(fptr, op2);
             }
 
+            if(in_acc(op2, fptr)){
+                op2 = strdup("AX");
+            }
+
             fprintf(fptr, "\tMOV BX, %s\n", op2);
             fprintf(fptr, "\tCMP BX, 0h\n");
             fprintf(fptr, "\tJNE %s\n", temp);
@@ -324,6 +333,10 @@ void qdr_to_asm(FILE* fptr, int i){
 
             if(is_array(op2)){
                 arr_to_qsm(fptr, op2);
+            }
+
+            if(in_acc(op2, fptr)){
+                op2 = strdup("AX");
             }
             
             fprintf(fptr, "\tMOV BX, %s\n", op2);
@@ -487,6 +500,12 @@ void qdr_to_asm(FILE* fptr, int i){
         else{
             fprintf(fptr, "\tJMP %s\n", quad[d].etq);
         }
+    }
+    else if(strcmp(oper, "+") == 0 && strcmp(op2, "1") == 0 && strcmp(res, op1) == 0 && !is_array(res)){
+        
+        fprintf(fptr, "\tINC %s\n", res);
+        ax = strdup(res);
+
     }
     else if(strcmp(oper, "+") == 0){
 
@@ -702,7 +721,7 @@ void generer_asm(int tc){
     }
 
 
-   fprintf(fptr, "\tMOV AH, 4Ch\n\tINT 21h\n\t%s ENDS\nEND %s", pgm_id, pgm_id);
+   fprintf(fptr, "\tMOV AH, 4Ch\n\tINT 21h\nCODE ENDS\nEND %s", pgm_id);
    fclose(fptr);
 }
 
