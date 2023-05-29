@@ -77,78 +77,70 @@ CODE SEGMENT
 	CMP AX, BX
 	JB E0
 	MOV t8, 1h
-	JMP E1
+	JMP E0
 E0:
 	MOV t8, 0h
-E1:
 	MOV BX, t8
 	CMP BX, 0h
-	JE E2
+	JE E1
 	MOV A, 0h
-	JMP E3
+	JMP E2
+E2:
 	MOV AX, A
 	ADD AX, 1h
 	MOV A, AX
-E3:
-	MOV AX, A
-	MOV BX, D
-	CMP AX, BX
-	JA E4
+	JMP E1
 	MOV AX, D
 	MUL AX, A
 	MOV t9, AX
 	MOV AX, t9
 	MOV A, AX
-	JMP E5
-E4:
-	JMP E6
-E2:
+	JMP E3
+E1:
+	JMP E4
 	MOV AX, A
 	MOV BX, fh
 	CMP AX, BX
-	JA E7
+	JA E5
 	MOV t10, 1h
-	JMP E8
-E7:
+	JMP E5
+E5:
 	MOV t10, 0h
-E8:
 	MOV AX, A
 	MOV BX, 0h
 	CMP AX, BX
-	JB E9
+	JB E6
 	MOV t11, 1h
-	JMP E10
-E9:
+	JMP E6
+E6:
 	MOV t11, 0h
-E10:
 	MOV AX, t10
 	MUL AX, t11
 	MOV t12, AX
 	MOV BX, t12
 	CMP BX, 0h
-	JE E11
+	JE E7
 	MOV t13, 1h
-	JMP E12
-E11:
+E7:
+	JMP E8
+E8:
 	MOV t13, 0h
-E12:
 	MOV BX, t13
 	CMP BX, 0h
-	JE E13
+	JE E9
 	MOV AX, A
 	SUB AX, 4h
 	MOV t14, AX
 	MOV BX, t14
 	CMP BX, 0h
-	JNE E14
+	JNE E10
 	MOV t15, 1h
-	JMP E15
-E14:
+	JMP E10
+E10:
 	MOV t15, 0h
-E15:
 	MOV BX, t15
 	CMP BX, 0h
-	JE E16
+	JE E11
 	MOV B, 63h
 	MOV AX, B
 	SUB AX, D
@@ -158,28 +150,24 @@ E15:
 	MOV t17, AX
 	MOV BX, t17
 	CMP BX, 0h
-	JNE E17
+	JNE E12
 	MOV t18, 1h
-	JMP E18
-E17:
+	JMP E12
+E12:
 	MOV t18, 0h
-E18:
 	MOV BX, t18
 	CMP BX, 0h
-	JE E19
+	JE E13
 	MOV B, 0h
-	JMP E16
-E19:
-	MOV A, 0h
-E16:
-	JMP E2
 E13:
+	JMP E11
+E11:
+	MOV A, 0h
+E9:
+	JMP E1
 	MOV AX, A
-	ADD AX, 1h
-	MOV t19, AX
-	MOV AX, t19
 	MOV A, AX
-E6:
+E4:
 	MOV AH, 4Ch
 	INT 21h
 	Pgm ENDS
