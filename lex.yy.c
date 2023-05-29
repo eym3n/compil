@@ -428,8 +428,7 @@ char *yytext;
 extern int nb_lignes;
 extern int col;
 extern YYSTYPE yylval;
-
-#line 433 "lex.yy.c"
+#line 432 "lex.yy.c"
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -583,7 +582,7 @@ YY_DECL
 #line 19 "lexical.l"
 
 
-#line 587 "lex.yy.c"
+#line 586 "lex.yy.c"
 
 	if ( yy_init )
 		{
@@ -899,7 +898,7 @@ YY_RULE_SETUP
 #line 93 "lexical.l"
 ECHO;
 	YY_BREAK
-#line 903 "lex.yy.c"
+#line 902 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 

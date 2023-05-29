@@ -1,4 +1,5 @@
 %{
+    
   #include <stdio.h>
   #include <stdlib.h>
   #include <string.h>
@@ -1002,6 +1003,8 @@ int main()
   init();
   yyparse();
   afficher();
+  afficher_qdr();
+  Propagation_expression_common();
   afficher_qdr();
 
   int x = tc;

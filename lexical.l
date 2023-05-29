@@ -5,8 +5,8 @@
 extern int nb_lignes;
 extern int col;
 extern YYSTYPE yylval;
-
 %}
+
 IDF		[A-Za-z][a-z0-9]*
 COMMENT %%.*
 chiffre [0-9]
