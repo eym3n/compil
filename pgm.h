@@ -735,7 +735,7 @@ void removeQuad(int pos) {
   qc--;
 }
 
-void Propagation_expression_common() 
+void Propagation_common_expressions() 
 {
     char OPER[200];
     char OP1[200];
@@ -745,8 +745,8 @@ void Propagation_expression_common()
 
     int changed;
 
+    printf("\t\t< === Propagation of common expressions : === >\n");
     for(int i=0; i<qc; i++) {
-        printf("|p[%d]=(%s,%s,%s,%s)\n",i,quad[i].oper,quad[i].op1,quad[i].op2,quad[i].res);
         if(strcmp(quad[i].oper ,":=") != 0 && strcmp(quad[i].oper ,"BZ") != 0 && strcmp(quad[i].oper ,"BR") != 0) {
             for(int j=i+1; j<qc; j++) {
                 changed = 0;
@@ -760,11 +760,61 @@ void Propagation_expression_common()
                         strcpy(quad[j].op1,quad[i].res);
                         strcpy(quad[j].op2,"");
 
-                        printf(" Redondance : %s := %s \n",quad[j].res,quad[i].res);
+                        printf(" Redundancy : %s := %s \n",quad[j].res,quad[i].res);
                     }
                 }
             }
         }
+    }
+}
+
+void Propagation_copie() 
+{
+    int changed;
+
+    printf("\t\t< === Propagation of copies : === >\n");
+    for(int i=0; i<qc; i++) {
+        if(strcmp(quad[i].oper ,":=") == 0) {
+            for(int j=i+1; j<qc; j++) {
+                changed = 0;
+                
+                if(strcmp(quad[i].res ,quad[j].op1)== 0 || strcmp(quad[i].res ,quad[j].op2) == 0) {
+                    for(int k=i+1; k<j; k++) {
+                        if(strcmp(quad[k].res, quad[i].res) == 0) changed = 1;
+                    }
+                    if(!changed) {
+                        if(strcmp(quad[i].res ,quad[j].op1)== 0)  strcpy(quad[j].op1,quad[i].op1);
+                        if(strcmp(quad[i].res ,quad[j].op2)== 0)  strcpy(quad[j].op2,quad[i].op1);
+                        
+                        printf(" Copie : %s := %s \n",quad[i].res,quad[i].op1);
+                    }
+                }
+            }
+        }
+    }
+}
+
+void Elimination_useless_code() {
+    int used;
+
+    printf("\t\t< === Elimination of useless code : === >\n");
+    int i = 0;
+    while(i<qc) {
+        printf("%d %s - ",!exists(quad[i].res),quad[i].res);
+        if(!exists(quad[i].res)) {
+           used = 0;
+           for(int j=i+1; j<qc; j++) {
+               if(strcmp(quad[i].res,quad[j].op1)== 0 || strcmp(quad[i].res,quad[j].op2) == 0) used = 1;
+           } 
+           if(!used) {
+               printf(" Useless : %s := %s \n",quad[i].res,quad[i].op1);
+               removeQuad(i);
+           }
+           else {
+               i++;
+           }
+        }
+        else i++;
     }
 }
 // =======================================================================================================
