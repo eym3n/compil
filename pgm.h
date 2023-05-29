@@ -213,6 +213,7 @@ int in_acc(char* var, FILE* fptr){
     }
     else{
         fprintf(fptr, "\tMOV %s, AX\n", ax);
+        ax = NULL;
         return 0;
     }
 }
@@ -252,6 +253,7 @@ void qdr_to_asm(FILE* fptr, int i){
             if(is_array(op1)){
                 arr_to_qsm(fptr, op1);
                 fprintf(fptr, "\tMOV AX, %s\n", op1);
+                ax = NULL;
             }
             else{
                 if(!in_acc(op1, fptr)){
@@ -272,237 +274,174 @@ void qdr_to_asm(FILE* fptr, int i){
     }
     else if(strcmp(oper, "BR") == 0){
         int d = atoi(op1);
-        char temp[20];
-        if(strcmp(quad[d].etq, "") == 0){
-            sprintf(temp, "E%d", e);
-            e++;
-            
-            sprintf(quad[d].etq, "%s", temp);
-            fprintf(fptr, "\tJMP %s\n", temp);
-        }
-        else{
-            fprintf(fptr, "\tJMP %s\n", quad[d].etq);
-        }
+
+        fprintf(fptr, "\tJMP %s\n", quad[d].etq);
+        printf("branched to %s : %d\n", quad[d].etq, d);
+
     }
     else if(strcmp(oper, "BNZ") == 0){
         int d = atoi(op1);
-        char temp[20];
-        if(strcmp(quad[d].etq, "") == 0){
-            sprintf(temp, "E%d", e);
-            e++;
-
-            if(is_direct(op2)){
-                char temp[50];
-                sprintf(temp, "%x", atoi(op2));
-                sprintf(op2, "%sh", trim(temp));  
-            }
-            
-            sprintf(quad[d].etq, "%s", temp);
-
-            if(is_array(op2)){
-                arr_to_qsm(fptr, op2);
-            }
-
-            if(in_acc(op2, fptr)){
-                op2 = strdup("AX");
-            }
-
-            fprintf(fptr, "\tMOV BX, %s\n", op2);
-            fprintf(fptr, "\tCMP BX, 0h\n");
-            fprintf(fptr, "\tJNE %s\n", temp);
+        
+        if(is_direct(op2)){
+            char temp[50];
+            sprintf(temp, "%x", atoi(op2));
+            sprintf(op2, "%sh", trim(temp));  
         }
-        else{
-            fprintf(fptr, "\tJMP %s\n", quad[d].etq);
+        
+        if(is_array(op2)){
+            arr_to_qsm(fptr, op2);
         }
+
+        if(in_acc(op2, fptr)){
+            op2 = strdup("AX");
+        }
+
+        fprintf(fptr, "\tMOV BX, %s\n", op2);
+        fprintf(fptr, "\tCMP BX, 0h\n");
+        fprintf(fptr, "\tJNE %s\n", quad[d].etq);
     }
     else if(strcmp(oper, "BZ") == 0){
         int d = atoi(op1);
-        char temp[20];
-        if(strcmp(quad[d].etq, "") == 0){
-            sprintf(temp, "E%d", e);
-            e++;
 
-
-            if(is_direct(op2)){
-                char temp[50];
-                sprintf(temp, "%x", atoi(op2));
-                sprintf(op2, "%sh", trim(temp));  
-            }
-            
-            sprintf(quad[d].etq, "%s", temp);
-
-            if(is_array(op2)){
-                arr_to_qsm(fptr, op2);
-            }
-
-            if(in_acc(op2, fptr)){
-                op2 = strdup("AX");
-            }
-            
-            fprintf(fptr, "\tMOV BX, %s\n", op2);
-            fprintf(fptr, "\tCMP BX, 0h\n");
-            fprintf(fptr, "\tJE %s\n", temp);
+        if(is_direct(op2)){
+            char temp[50];
+            sprintf(temp, "%x", atoi(op2));
+            sprintf(op2, "%sh", trim(temp));  
         }
-        else{
-            fprintf(fptr, "\tJMP %s\n", quad[d].etq);
+
+        if(is_array(op2)){
+            arr_to_qsm(fptr, op2);
         }
+
+        if(in_acc(op2, fptr)){
+            op2 = strdup("AX");
+        }
+        
+        fprintf(fptr, "\tMOV BX, %s\n", op2);
+        fprintf(fptr, "\tCMP BX, 0h\n");
+        fprintf(fptr, "\tJE %s\n", quad[d].etq);
     }
     else if(strcmp(oper, "BGE") == 0){
         int d = atoi(op1);
-        char temp[20];
-        if(strcmp(quad[d].etq, "") == 0){
-            sprintf(temp, "E%d", e);
-            e++;
-            
-            sprintf(quad[d].etq, "%s", temp);
 
-            if(is_direct(op2)){
-                char temp[50];
-                sprintf(temp, "%x", atoi(op2));
-                sprintf(op2, "%sh", trim(temp));  
-            }
-            if(is_direct(res)){
-                char temp[50];
-                sprintf(temp, "%x", atoi(res));
-                sprintf(res, "%sh", trim(temp));  
-            }
-
-            if(is_array(op2)){
-                arr_to_qsm(fptr, op2);
-            }
-            
-            fprintf(fptr, "\tMOV AX, %s\n", op2);
-
-            if(is_array(res)){
-                arr_to_qsm(fptr, res);
-            }
-
-            fprintf(fptr, "\tMOV BX, %s\n", res);
-            fprintf(fptr, "\tCMP AX, BX\n");
-            fprintf(fptr, "\tJAE %s\n", temp);
+        if(is_direct(op2)){
+            char temp[50];
+            sprintf(temp, "%x", atoi(op2));
+            sprintf(op2, "%sh", trim(temp));  
         }
-        else{
-            fprintf(fptr, "\tJMP %s\n", quad[d].etq);
+        if(is_direct(res)){
+            char temp[50];
+            sprintf(temp, "%x", atoi(res));
+            sprintf(res, "%sh", trim(temp));  
         }
+
+        if(is_array(op2)){
+            arr_to_qsm(fptr, op2);
+        }
+        
+        fprintf(fptr, "\tMOV AX, %s\n", op2);
+        ax = NULL;
+
+        if(is_array(res)){
+            arr_to_qsm(fptr, res);
+        }
+
+        fprintf(fptr, "\tMOV BX, %s\n", res);
+        fprintf(fptr, "\tCMP AX, BX\n");
+        fprintf(fptr, "\tJAE %s\n", quad[d].etq);
     }
     else if(strcmp(oper, "BG") == 0){
+
         int d = atoi(op1);
-        char temp[20];
-        if(strcmp(quad[d].etq, "") == 0){
-            sprintf(temp, "E%d", e);
-            e++;
-            
-            sprintf(quad[d].etq, "%s", temp);
 
-            if(is_direct(op2)){
-                char temp[50];
-                sprintf(temp, "%x", atoi(op2));
-                sprintf(op2, "%sh", trim(temp));  
-            }
-            if(is_direct(res)){
-                char temp[50];
-                sprintf(temp, "%x", atoi(res));
-                sprintf(res, "%sh", trim(temp));  
-            }
-
-            if(is_array(op2)){
-                arr_to_qsm(fptr, op2);
-            }
-
-
-            fprintf(fptr, "\tMOV AX, %s\n", op2);
-
-            if(is_array(res)){
-                arr_to_qsm(fptr, res);
-            }
-
-            fprintf(fptr, "\tMOV BX, %s\n", res);
-            fprintf(fptr, "\tCMP AX, BX\n");
-            fprintf(fptr, "\tJA %s\n", temp);
+        if(is_direct(op2)){
+            char temp[50];
+            sprintf(temp, "%x", atoi(op2));
+            sprintf(op2, "%sh", trim(temp));  
         }
-        else{
-            fprintf(fptr, "\tJMP %s\n", quad[d].etq);
+        if(is_direct(res)){
+            char temp[50];
+            sprintf(temp, "%x", atoi(res));
+            sprintf(res, "%sh", trim(temp));  
         }
+
+        if(is_array(op2)){
+            arr_to_qsm(fptr, op2);
+        }
+
+
+        fprintf(fptr, "\tMOV AX, %s\n", op2);
+        ax = NULL;
+
+        if(is_array(res)){
+            arr_to_qsm(fptr, res);
+        }
+
+        fprintf(fptr, "\tMOV BX, %s\n", res);
+        fprintf(fptr, "\tCMP AX, BX\n");
+        fprintf(fptr, "\tJA %s\n", quad[d].etq);
     }
     else if(strcmp(oper, "BLE") == 0){
         int d = atoi(op1);
-        char temp[20];
-        if(strcmp(quad[d].etq, "") == 0){
-            sprintf(temp, "E%d", e);
-            e++;
-            
-            sprintf(quad[d].etq, "%s", temp);
 
-
-            if(is_direct(op2)){
-                char temp[50];
-                sprintf(temp, "%x", atoi(op2));
-                sprintf(op2, "%sh", trim(temp));  
-            }
-            if(is_direct(res)){
-                char temp[50];
-                sprintf(temp, "%x", atoi(res));
-                sprintf(res, "%sh", trim(temp));  
-            }
-
-            if(is_array(op2)){
-                arr_to_qsm(fptr, op2);
-            }
-
-            fprintf(fptr, "\tMOV AX, %s\n", op2);
-
-            if(is_array(res)){
-                arr_to_qsm(fptr, res);
-            }
-
-            fprintf(fptr, "\tMOV BX, %s\n", res);
-            fprintf(fptr, "\tCMP AX, BX\n");
-            fprintf(fptr, "\tJBE %s\n", temp);
+        if(is_direct(op2)){
+            char temp[50];
+            sprintf(temp, "%x", atoi(op2));
+            sprintf(op2, "%sh", trim(temp));  
         }
-        else{
-            fprintf(fptr, "\tJMP %s\n", quad[d].etq);
+        if(is_direct(res)){
+            char temp[50];
+            sprintf(temp, "%x", atoi(res));
+            sprintf(res, "%sh", trim(temp));  
         }
+
+        if(is_array(op2)){
+            arr_to_qsm(fptr, op2);
+        }
+
+        fprintf(fptr, "\tMOV AX, %s\n", op2);
+        ax = NULL;
+
+        if(is_array(res)){
+            arr_to_qsm(fptr, res);
+        }
+
+        fprintf(fptr, "\tMOV BX, %s\n", res);
+        fprintf(fptr, "\tCMP AX, BX\n");
+        fprintf(fptr, "\tJBE %s\n", quad[d].etq);
     }
     else if(strcmp(oper, "BL") == 0){
         int d = atoi(op1);
-        char temp[20];
-        if(strcmp(quad[d].etq, "") == 0){
-            sprintf(temp, "E%d", e);
-            e++;
-            
-            sprintf(quad[d].etq, "%s", temp);
 
-            if(is_direct(op2)){
-                char temp[50];
-                sprintf(temp, "%x", atoi(op2));
-                sprintf(op2, "%sh", trim(temp));  
-            }
-            if(is_direct(res)){
-                char temp[50];
-                sprintf(temp, "%x", atoi(res));
-                sprintf(res, "%sh", trim(temp));  
-            }
-
-            if(is_array(op2)){
-                arr_to_qsm(fptr, op2);
-            }
-
-            fprintf(fptr, "\tMOV AX, %s\n", op2);
-
-            if(is_array(res)){
-                arr_to_qsm(fptr, res);
-            }
-
-            fprintf(fptr, "\tMOV BX, %s\n", res);
-            fprintf(fptr, "\tCMP AX, BX\n");
-            fprintf(fptr, "\tJB %s\n", temp);
+        if(is_direct(op2)){
+            char temp[50];
+            sprintf(temp, "%x", atoi(op2));
+            sprintf(op2, "%sh", trim(temp));  
         }
-        else{
-            fprintf(fptr, "\tJMP %s\n", quad[d].etq);
+        if(is_direct(res)){
+            char temp[50];
+            sprintf(temp, "%x", atoi(res));
+            sprintf(res, "%sh", trim(temp));  
         }
+
+        if(is_array(op2)){
+            arr_to_qsm(fptr, op2);
+        }
+
+        fprintf(fptr, "\tMOV AX, %s\n", op2);
+        ax = NULL;
+
+        if(is_array(res)){
+            arr_to_qsm(fptr, res);
+        }
+
+        fprintf(fptr, "\tMOV BX, %s\n", res);
+        fprintf(fptr, "\tCMP AX, BX\n");
+        fprintf(fptr, "\tJB %s\n", quad[d].etq);
     }
     else if(strcmp(oper, "+") == 0 && strcmp(op2, "1") == 0 && strcmp(res, op1) == 0 && !is_array(res)){
         
+        printf("ETIQUETTE %d: %s\n", i, etq);
         fprintf(fptr, "\tINC %s\n", res);
         ax = strdup(res);
 
@@ -523,6 +462,7 @@ void qdr_to_asm(FILE* fptr, int i){
         if(is_array(op1)){
             arr_to_qsm(fptr, op1);
             fprintf(fptr, "\tMOV AX, %s\n", op1);
+            ax = NULL;
         }
         else{
             if(!in_acc(op1, fptr)){
@@ -564,6 +504,7 @@ void qdr_to_asm(FILE* fptr, int i){
         if(is_array(op1)){
             arr_to_qsm(fptr, op1);
             fprintf(fptr, "\tMOV AX, %s\n", op1);
+            ax = NULL;
         }
         else{
             if(!in_acc(op1, fptr)){
@@ -601,6 +542,7 @@ void qdr_to_asm(FILE* fptr, int i){
         if(is_array(op1)){
             arr_to_qsm(fptr, op1);
             fprintf(fptr, "\tMOV AX, %s\n", op1);
+            ax = NULL;
         }
         else{
             if(!in_acc(op1, fptr)){
@@ -638,6 +580,7 @@ void qdr_to_asm(FILE* fptr, int i){
         if(is_array(op1)){
             arr_to_qsm(fptr, op1);
             fprintf(fptr, "\tMOV AX, %s\n", op1);
+            ax = NULL;
         }
         else{
             if(!in_acc(op1, fptr)){
@@ -661,6 +604,23 @@ void qdr_to_asm(FILE* fptr, int i){
     }
 }
 
+
+
+
+void generer_etiquettes(){
+    for(int i=0; i<qc; i++){
+        if(quad[i].oper[0] == 'B'){
+            int d = atoi(quad[i].op1);
+            char temp[20];
+            if(strcmp(quad[d].etq, "") == 0){
+                sprintf(temp, "E%d", e);
+                e++;
+                sprintf(quad[d].etq, "%s", temp);
+            }
+        }
+    }
+
+}
 
 
 
@@ -715,6 +675,7 @@ void generer_asm(int tc){
 
    fprintf(fptr, "DATA ends\nCODE SEGMENT\n\t%s:\n\tASSUME CS:CODE, DS:DATA\n\tMOV AX,DATA\n\tMOV DS, AX\n", pgm_id);
 
+    generer_etiquettes();
 
     for(int i=0; i<qc; i++){
         qdr_to_asm(fptr, i);

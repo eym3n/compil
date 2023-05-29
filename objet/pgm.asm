@@ -70,19 +70,20 @@ CODE SEGMENT
 E0:
 	MOV t8, 0h
 E1:
-	MOV A, AX
 	MOV BX, t8
 	CMP BX, 0h
 	JE E2
 	MOV A, 0h
 	JMP E3
+E5:
 	INC A
 E3:
 	MOV AX, A
 	MOV BX, D
 	CMP AX, BX
 	JA E4
-	MUL AX, D
+	MOV AX, D
+	MUL AX, A
 	MOV A, AX
 	JMP E5
 E4:
@@ -106,7 +107,6 @@ E8:
 E9:
 	MOV t11, 0h
 E10:
-	MOV A, AX
 	MOV AX, t10
 	MUL AX, t11
 	MOV BX, AX
@@ -121,7 +121,6 @@ E12:
 	MOV BX, t13
 	CMP BX, 0h
 	JE E13
-	MOV t12, AX
 	MOV AX, A
 	SUB AX, 4h
 	MOV BX, AX
@@ -137,7 +136,6 @@ E15:
 	CMP BX, 0h
 	JE E16
 	MOV B, 63h
-	MOV t14, AX
 	MOV AX, B
 	SUB AX, D
 	SUB AX, fh
@@ -160,7 +158,6 @@ E19:
 E16:
 	JMP E2
 E13:
-	MOV t17, AX
 	MOV AX, A
 	ADD AX, 1h
 	MOV A, AX
