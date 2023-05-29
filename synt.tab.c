@@ -2989,7 +2989,7 @@ int main()
   yyparse();
   afficher();
   afficher_qdr();
-  Propagation_de_expression_common();
+  Propagation_de_expression_common2();
   afficher_qdr();
 
   int x = tc;

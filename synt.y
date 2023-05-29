@@ -1004,7 +1004,7 @@ int main()
   yyparse();
   afficher();
   afficher_qdr();
-  Propagation_de_expression_common();
+  Propagation_expression_common();
   afficher_qdr();
 
   int x = tc;

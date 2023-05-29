@@ -735,7 +735,7 @@ void removeQuad(int pos) {
   qc--;
 }
 
-void Propagation_de_expression_common2() 
+void Propagation_expression_common() 
 {
     char OPER[200];
     char OP1[200];
@@ -743,24 +743,29 @@ void Propagation_de_expression_common2()
     char RES[200];
     char RES2[200];
 
+    int changed;
+
     for(int i=0; i<qc; i++) {
         printf("|p[%d]=(%s,%s,%s,%s)\n",i,quad[i].oper,quad[i].op1,quad[i].op2,quad[i].res);
         if(strcmp(quad[i].oper ,":=") != 0 && strcmp(quad[i].oper ,"BZ") != 0 && strcmp(quad[i].oper ,"BR") != 0) {
             for(int j=i+1; j<qc; j++) {
-                strcpy(OPER, quad[j].oper);
-    	        strcpy(OP1 , quad[j].op1);
-    	        strcpy(OP2 , quad[j].op2);
-    	        strcpy(RES , quad[j].res);
+                changed = 0;
+                
+                if(strcmp(quad[i].op1 ,quad[j].op1)== 0 && strcmp(quad[i].op2 ,quad[j].op2) == 0 && strcmp(quad[i].oper ,quad[j].oper) == 0) {
+                    for(int k=i+1; k<j; k++) {
+                        if(strcmp(quad[k].res, quad[i].op1) == 0 || strcmp(quad[k].res, quad[i].op2) == 0) changed = 1;
+                    }
+                    if(!changed) {
+                        strcpy(quad[j].oper,":=");
+                        strcpy(quad[j].op1,quad[i].res);
+                        strcpy(quad[j].op2,"");
 
-                if(strcmp(quad[i].res ,OP1)== 0 || strcmp(quad[i].res ,OP2) == 0) {
-                    
+                        printf(" Redondance : %s := %s \n",quad[j].res,quad[i].res);
+                    }
                 }
             }
         }
     }
-
-    
-    
 }
 // =======================================================================================================
 // =======================================================================================================
@@ -777,7 +782,7 @@ void shift(int pos) {
   qc--;
 }
 
-void Propagation_de_expression_common() 
+void Propagation_de_expression() 
 {
   printf("-optimization propogation de expression common \n-");
   /*the concept in which optimization of expression common is based on*/

@@ -582,8 +582,7 @@ YY_DECL
 #line 19 "lexical.l"
 
 
-
-#line 587 "lex.yy.c"
+#line 586 "lex.yy.c"
 
 	if ( yy_init )
 		{
@@ -718,7 +717,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 34 "lexical.l"
+#line 33 "lexical.l"
 {
                     col+= strlen(yytext); 
                     int temp = (yytext[0] == '(') ? atoi(yytext+1) : atoi(yytext);
@@ -732,7 +731,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 44 "lexical.l"
+#line 43 "lexical.l"
 {
                     float temp = (yytext[0] == '(') ? atof(yytext+1) : atof(yytext);
                     lookup(yytext,"CST","FLOAT",temp, 0);
@@ -743,12 +742,12 @@ YY_RULE_SETUP
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 51 "lexical.l"
+#line 50 "lexical.l"
 {}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 52 "lexical.l"
+#line 51 "lexical.l"
 {
                 lookup (yytext,"IDF","",0, 0); 
                 col+= strlen(yytext);
@@ -881,25 +880,25 @@ YY_RULE_SETUP
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 91 "lexical.l"
+#line 90 "lexical.l"
 {col+= strlen(yytext);}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 92 "lexical.l"
+#line 91 "lexical.l"
 {nb_lignes++; col = 1;}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 93 "lexical.l"
+#line 92 "lexical.l"
 {printf("Erreur lexicale a la ligne %d, col %d\n", nb_lignes, col); return err;}
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 94 "lexical.l"
+#line 93 "lexical.l"
 ECHO;
 	YY_BREAK
-#line 903 "lex.yy.c"
+#line 902 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1785,4 +1784,4 @@ int main()
 	return 0;
 	}
 #endif
-#line 94 "lexical.l"
+#line 93 "lexical.l"

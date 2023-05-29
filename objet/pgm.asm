@@ -10,26 +10,10 @@ DATA segment
 	E         fff2h
 	F         c180h
 	i         DW	?
+	Z         DW	?
 	t0        DW	?
 	t1        DW	?
 	t2        DW	?
-	t3        DW	?
-	t4        DW	?
-	t5        DW	?
-	t6        DW	?
-	t7        DW	?
-	t8        DW	?
-	t9        DW	?
-	t10       DW	?
-	t11       DW	?
-	t12       DW	?
-	t13       DW	?
-	t14       DW	?
-	t15       DW	?
-	t16       DW	?
-	t17       DW	?
-	t18       DW	?
-	t19       DW	?
 DATA ends
 CODE SEGMENT
 	Pgm:
@@ -45,120 +29,15 @@ CODE SEGMENT
 	MOV SI, ah
 	ADD SI, SI
 	MOV array[SI], AX
+	MOV A, 1h
 	MOV t0, AX
-	MOV AX, fh
-	DIV AX, 3h
-	ADD AX, B
-	MOV t2, AX
-	MOV AX, C
-	SUB AX, ah
-	DIV AX, C
-	MUL AX, t2
-	MOV t5, AX
-	MOV AX, D
-	DIV AX, 2h
-	ADD AX, t5
-	MOV A, AX
-	MOV SI, i
-	ADD SI, SI
-	MOV AX, array[SI]
-	MOV BX, ah
-	CMP AX, BX
-	JB E0
-	MOV t8, 1h
-	JMP E0
-E0:
-	MOV t8, 0h
-E1:
-	MOV A, AX
-	MOV BX, t8
-	CMP BX, 0h
-	JE E1
-	MOV A, 0h
-	JMP E3
-	INC A
-E3:
-	MOV AX, A
-	MOV BX, D
-	CMP AX, BX
-	JA E4
-	MUL AX, D
-	MOV A, AX
-	JMP E3
-E1:
-	JMP E4
-	MOV AX, A
-	MOV BX, fh
-	CMP AX, BX
-	JA E5
-	MOV t10, 1h
-	JMP E5
-E5:
-	MOV t10, 0h
-	MOV AX, A
-	MOV BX, 0h
-	CMP AX, BX
-	JB E6
-	MOV t11, 1h
-	JMP E6
-E6:
-	MOV t11, 0h
-E10:
-	MOV A, AX
-	MOV AX, t10
-	MUL AX, t11
-	MOV BX, AX
-	CMP BX, 0h
-	JE E7
-	MOV t13, 1h
-E7:
-	JMP E8
-E8:
-	MOV t13, 0h
-E12:
-	MOV t12, AX
-	MOV BX, t13
-	CMP BX, 0h
-	JE E13
-	MOV t12, AX
-	MOV AX, A
-	SUB AX, 4h
-	MOV BX, AX
-	CMP BX, 0h
-	JNE E10
-	MOV t15, 1h
-	JMP E10
-E10:
-	MOV t15, 0h
-E15:
-	MOV t14, AX
-	MOV BX, t15
-	CMP BX, 0h
-	JE E11
-	MOV B, 63h
-	MOV t14, AX
-	MOV AX, B
-	SUB AX, D
-	SUB AX, fh
-	MOV BX, AX
-	CMP BX, 0h
-	JNE E12
-	MOV t18, 1h
-	JMP E12
-E12:
-	MOV t18, 0h
-E18:
-	MOV t17, AX
-	MOV BX, t18
-	CMP BX, 0h
-	JE E13
-	MOV B, 0h
-E13:
-	MOV t17, AX
 	MOV AX, A
 	ADD AX, 1h
-	MOV A, AX
-E4:
+	MOV B, AX
+	MOV B, AX
+	MOV AX, t1
+	MOV t2, AX
+	MOV Z, AX
 	MOV AH, 4Ch
 	INT 21h
 CODE ENDS
