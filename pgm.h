@@ -276,7 +276,6 @@ void qdr_to_asm(FILE* fptr, int i){
         int d = atoi(op1);
 
         fprintf(fptr, "\tJMP %s\n", quad[d].etq);
-        printf("branched to %s : %d\n", quad[d].etq, d);
 
     }
     else if(strcmp(oper, "BNZ") == 0){
@@ -440,8 +439,6 @@ void qdr_to_asm(FILE* fptr, int i){
         fprintf(fptr, "\tJB %s\n", quad[d].etq);
     }
     else if(strcmp(oper, "+") == 0 && strcmp(op2, "1") == 0 && strcmp(res, op1) == 0 && !is_array(res)){
-        
-        printf("ETIQUETTE %d: %s\n", i, etq);
         fprintf(fptr, "\tINC %s\n", res);
         ax = strdup(res);
 
