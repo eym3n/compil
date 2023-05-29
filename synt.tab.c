@@ -2989,13 +2989,20 @@ int main()
   yyparse();
   afficher();
   afficher_qdr();
-  Propagation_expression_common();
+
+  Propagation_common_expressions();
+  afficher_qdr();
+  Propagation_copie();
+  afficher_qdr();
+  
+  Elimination_useless_code();
+  
   afficher_qdr();
 
   int x = tc;
   generer_asm(x);
 
-    return 0;
+  return 0;
 }
 int yywrap()
 {}

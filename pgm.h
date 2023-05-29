@@ -238,6 +238,8 @@ void qdr_to_asm(FILE* fptr, int i){
     char* oper = strdup(quad[i].oper);
     char* etq = strdup(quad[i].etq);
 
+    printf("- %s %s %s %s\n",oper,op1,op2,res);
+
     if(strcmp(etq, "") != 0){
         fprintf(fptr, "%s:\n", etq);
     }
@@ -268,7 +270,7 @@ void qdr_to_asm(FILE* fptr, int i){
             }
             else{
                 fprintf(fptr, "\tMOV %s, AX\n", res);
-                ax = strdup(res);
+                ax = NULL;
             }
         }
     }
@@ -622,13 +624,13 @@ void generer_etiquettes(){
 
 void generer_asm(int tc){
 
-    char *pgm_id;
+    node* pgm_id;
     int x = tc;
 
    FILE *fptr = fopen("objet/pgm.asm","w");
 
    fprintf(fptr,"Pile segment stack ;\n\tdw 100 dup(?)\nPile ends\nDATA segment\n");
-
+    afficher_qdr();
    for(int i=0; i<TABLE_SIZE; i++){
         if(tab[i] != NULL){
             node* t = tab[i];
@@ -636,7 +638,7 @@ void generer_asm(int tc){
                 if(strcmp(t->elt.type, "") != 0){
                     if(strcmp(t->elt.code, "IDF") == 0){
                         if(strcmp(t->elt.type, "PROGRAM ID") == 0){
-                            strcpy(pgm_id, t->elt.name);
+                            pgm_id = t;
                         }
                         else if(strcmp(t->elt.type, "STRUCT") == 0);
                         else if(t->elt.size > 0){
@@ -656,7 +658,6 @@ void generer_asm(int tc){
             }
         }
     }
-
     
     for(int i=0; i<x; i++){
         char temp[50];
@@ -664,7 +665,7 @@ void generer_asm(int tc){
         fprintf(fptr, "\t%-8s  DW\t?\n", temp);
     }
 
-   fprintf(fptr, "DATA ends\nCODE SEGMENT\n\t%s:\n\tASSUME CS:CODE, DS:DATA\n\tMOV AX,DATA\n\tMOV DS, AX\n", pgm_id);
+   fprintf(fptr, "DATA ends\nCODE SEGMENT\n\t%s:\n\tASSUME CS:CODE, DS:DATA\n\tMOV AX,DATA\n\tMOV DS, AX\n", pgm_id->elt.name);
 
     generer_etiquettes();
 
@@ -672,7 +673,7 @@ void generer_asm(int tc){
         qdr_to_asm(fptr, i);
     }
 
-   fprintf(fptr, "\tMOV AH, 4Ch\n\tINT 21h\nCODE ENDS\nEND %s", pgm_id);
+   fprintf(fptr, "\tMOV AH, 4Ch\n\tINT 21h\nCODE ENDS\nEND %s", pgm_id->elt.name);
    fclose(fptr);
 }
 
@@ -686,7 +687,7 @@ void removeQuad(int pos) {
   qc--;
 }
 
-void Propagation_expression_common() 
+void Propagation_common_expressions() 
 {
     char OPER[200];
     char OP1[200];
@@ -696,8 +697,8 @@ void Propagation_expression_common()
 
     int changed;
 
+    printf("\t\t< === Propagation of common expressions : === >\n");
     for(int i=0; i<qc; i++) {
-        printf("|p[%d]=(%s,%s,%s,%s)\n",i,quad[i].oper,quad[i].op1,quad[i].op2,quad[i].res);
         if(strcmp(quad[i].oper ,":=") != 0 && strcmp(quad[i].oper ,"BZ") != 0 && strcmp(quad[i].oper ,"BR") != 0) {
             for(int j=i+1; j<qc; j++) {
                 changed = 0;
@@ -711,11 +712,62 @@ void Propagation_expression_common()
                         strcpy(quad[j].op1,quad[i].res);
                         strcpy(quad[j].op2,"");
 
-                        printf(" Redondance : %s := %s \n",quad[j].res,quad[i].res);
+                        printf(" Redundancy : %s := %s \n",quad[j].res,quad[i].res);
                     }
                 }
             }
         }
+    }
+}
+
+void Propagation_copie() 
+{
+    int changed;
+
+    printf("\t\t< === Propagation of copies : === >\n");
+    for(int i=0; i<qc; i++) {
+        if(strcmp(quad[i].oper ,":=") == 0) {
+            for(int j=i+1; j<qc; j++) {
+                changed = 0;
+                
+                if(strcmp(quad[i].res ,quad[j].op1)== 0 || strcmp(quad[i].res ,quad[j].op2) == 0) {
+                    for(int k=i+1; k<j; k++) {
+                        if(strcmp(quad[k].res, quad[i].res) == 0) changed = 1;
+                    }
+                    if(!changed) {
+                        if(strcmp(quad[i].res ,quad[j].op1)== 0)  strcpy(quad[j].op1,quad[i].op1);
+                        if(strcmp(quad[i].res ,quad[j].op2)== 0)  strcpy(quad[j].op2,quad[i].op1);
+                        
+                        printf(" Copie : %s := %s \n",quad[i].res,quad[i].op1);
+                    }
+                }
+            }
+        }
+    }
+}
+
+void Elimination_useless_code() {
+    int used;
+
+    printf("\t\t< === Elimination of useless code : === >\n");
+    int i = 0;
+    while(i<qc) {
+        printf("%d %s - ",!exists(quad[i].res),quad[i].res);
+        if(!exists(quad[i].res)) {
+           used = 0;
+           for(int j=i+1; j<qc; j++) {
+               if(strcmp(quad[i].res,quad[j].op1)== 0 || strcmp(quad[i].res,quad[j].op2) == 0) used = 1;
+           } 
+           if(!used) {
+               printf(" Useless : %s := %s \n",quad[i].res,quad[i].op1);
+               removeQuad(i);
+
+           }
+           else {
+               i++;
+           }
+        }
+        else i++;
     }
 }
 // =======================================================================================================
