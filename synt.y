@@ -1004,8 +1004,8 @@ int main()
   yyparse();
   afficher();
   afficher_qdr();
-  Propagation_expression_common();
-  afficher_qdr();
+//   Propagation_expression_common();
+//   afficher_qdr();
 
   int x = tc;
   generer_asm(x);

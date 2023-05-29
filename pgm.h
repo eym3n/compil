@@ -623,9 +623,6 @@ void generer_etiquettes(){
 }
 
 
-
-
-
 void generer_asm(int tc){
 
     char *pgm_id;
@@ -664,14 +661,11 @@ void generer_asm(int tc){
     }
 
     
-
     for(int i=0; i<x; i++){
         char temp[50];
         sprintf(temp, "t%d", i);
         fprintf(fptr, "\t%-8s  DW\t?\n", temp);
     }
-
-
 
    fprintf(fptr, "DATA ends\nCODE SEGMENT\n\t%s:\n\tASSUME CS:CODE, DS:DATA\n\tMOV AX,DATA\n\tMOV DS, AX\n", pgm_id);
 
@@ -680,7 +674,6 @@ void generer_asm(int tc){
     for(int i=0; i<qc; i++){
         qdr_to_asm(fptr, i);
     }
-
 
    fprintf(fptr, "\tMOV AH, 4Ch\n\tINT 21h\nCODE ENDS\nEND %s", pgm_id);
    fclose(fptr);
