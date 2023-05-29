@@ -2991,10 +2991,7 @@ int main()
   afficher_qdr();
 
   Propagation_common_expressions();
-  afficher_qdr();
   Propagation_copie();
-  afficher_qdr();
-  
   Elimination_useless_code();
   
   afficher_qdr();
