@@ -10,23 +10,6 @@ DATA segment
 	t0        DW	?
 	t1        DW	?
 	t2        DW	?
-	t3        DW	?
-	t4        DW	?
-	t5        DW	?
-	t6        DW	?
-	t7        DW	?
-	t8        DW	?
-	t9        DW	?
-	t10       DW	?
-	t11       DW	?
-	t12       DW	?
-	t13       DW	?
-	t14       DW	?
-	t15       DW	?
-	t16       DW	?
-	t17       DW	?
-	t18       DW	?
-	t19       DW	?
 DATA ends
 CODE SEGMENT
 	Pgm:
@@ -44,7 +27,7 @@ CODE SEGMENT
 	MOV C, AX
 	MOV AX, 1h
 	ADD AX, 2h
-	MOV Pgm, AX
+	MOV E, AX
 	MOV AH, 4Ch
 	INT 21h
 CODE ENDS

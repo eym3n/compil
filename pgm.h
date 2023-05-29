@@ -238,6 +238,8 @@ void qdr_to_asm(FILE* fptr, int i){
     char* oper = strdup(quad[i].oper);
     char* etq = strdup(quad[i].etq);
 
+    printf("- %s %s %s %s\n",oper,op1,op2,res);
+
     if(strcmp(etq, "") != 0){
         fprintf(fptr, "%s:\n", etq);
     }
@@ -622,13 +624,13 @@ void generer_etiquettes(){
 
 void generer_asm(int tc){
 
-    char *pgm_id;
+    node* pgm_id;
     int x = tc;
 
    FILE *fptr = fopen("objet/pgm.asm","w");
 
    fprintf(fptr,"Pile segment stack ;\n\tdw 100 dup(?)\nPile ends\nDATA segment\n");
-
+    afficher_qdr();
    for(int i=0; i<TABLE_SIZE; i++){
         if(tab[i] != NULL){
             node* t = tab[i];
@@ -636,7 +638,7 @@ void generer_asm(int tc){
                 if(strcmp(t->elt.type, "") != 0){
                     if(strcmp(t->elt.code, "IDF") == 0){
                         if(strcmp(t->elt.type, "PROGRAM ID") == 0){
-                            strcpy(pgm_id, t->elt.name);
+                            pgm_id = t;
                         }
                         else if(strcmp(t->elt.type, "STRUCT") == 0);
                         else if(t->elt.size > 0){
@@ -656,7 +658,6 @@ void generer_asm(int tc){
             }
         }
     }
-
     
     for(int i=0; i<x; i++){
         char temp[50];
@@ -664,7 +665,7 @@ void generer_asm(int tc){
         fprintf(fptr, "\t%-8s  DW\t?\n", temp);
     }
 
-   fprintf(fptr, "DATA ends\nCODE SEGMENT\n\t%s:\n\tASSUME CS:CODE, DS:DATA\n\tMOV AX,DATA\n\tMOV DS, AX\n", pgm_id);
+   fprintf(fptr, "DATA ends\nCODE SEGMENT\n\t%s:\n\tASSUME CS:CODE, DS:DATA\n\tMOV AX,DATA\n\tMOV DS, AX\n", pgm_id->elt.name);
 
     generer_etiquettes();
 
@@ -672,7 +673,7 @@ void generer_asm(int tc){
         qdr_to_asm(fptr, i);
     }
 
-   fprintf(fptr, "\tMOV AH, 4Ch\n\tINT 21h\nCODE ENDS\nEND %s", pgm_id);
+   fprintf(fptr, "\tMOV AH, 4Ch\n\tINT 21h\nCODE ENDS\nEND %s", pgm_id->elt.name);
    fclose(fptr);
 }
 
@@ -760,6 +761,7 @@ void Elimination_useless_code() {
            if(!used) {
                printf(" Useless : %s := %s \n",quad[i].res,quad[i].op1);
                removeQuad(i);
+
            }
            else {
                i++;
