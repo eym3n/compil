@@ -629,7 +629,6 @@ void generer_asm(int tc){
    FILE *fptr = fopen("objet/pgm.asm","w");
 
    fprintf(fptr,"Pile segment stack ;\n\tdw 100 dup(?)\nPile ends\nDATA segment\n");
-    afficher_qdr();
    for(int i=0; i<TABLE_SIZE; i++){
         if(tab[i] != NULL){
             node* t = tab[i];
@@ -676,6 +675,8 @@ void generer_asm(int tc){
    fclose(fptr);
 }
 
+
+
 void removeQuad(int pos) {
   for (int i = pos; i < qc - 1; i++) {
     strcpy(quad[i].oper, quad[i+1].oper);
@@ -696,7 +697,7 @@ void Propagation_common_expressions()
 
     int changed;
 
-    printf("\t\t< === Propagation of common expressions : === >\n");
+    printf("\n\t\t< === Propagation of common expressions : === >\n");
     for(int i=0; i<qc; i++) {
         if(strcmp(quad[i].oper ,":=") != 0 && strcmp(quad[i].oper ,"BZ") != 0 && strcmp(quad[i].oper ,"BR") != 0) {
             for(int j=i+1; j<qc; j++) {
@@ -711,7 +712,7 @@ void Propagation_common_expressions()
                         strcpy(quad[j].op1,quad[i].res);
                         strcpy(quad[j].op2,"");
 
-                        printf(" Redundancy : %s := %s \n",quad[j].res,quad[i].res);
+                        printf(" Redundancy : %d - %s := %d - %s \n",i,quad[j].res,j,quad[i].res);
                     }
                 }
             }
@@ -723,7 +724,7 @@ void Propagation_copie()
 {
     int changed;
 
-    printf("\t\t< === Propagation of copies : === >\n");
+    printf("\n\t\t< === Propagation of copies : === >\n");
     for(int i=0; i<qc; i++) {
         if(strcmp(quad[i].oper ,":=") == 0) {
             for(int j=i+1; j<qc; j++) {
@@ -737,7 +738,7 @@ void Propagation_copie()
                         if(strcmp(quad[i].res ,quad[j].op1)== 0)  strcpy(quad[j].op1,quad[i].op1);
                         if(strcmp(quad[i].res ,quad[j].op2)== 0)  strcpy(quad[j].op2,quad[i].op1);
                         
-                        printf(" Copie : %s := %s \n",quad[i].res,quad[i].op1);
+                        printf(" Copie : %d - %s := %d - %s \n",i,quad[i].res,j,quad[i].op1);
                     }
                 }
             }
@@ -748,7 +749,7 @@ void Propagation_copie()
 void Elimination_useless_code() {
     int used;
 
-    printf("\t\t< === Elimination of useless code : === >\n");
+    printf("\n\t\t< === Elimination of useless code : === >\n");
     int i = 0;
     while(i<qc) {
         if(!exists(quad[i].res)) {
@@ -757,7 +758,7 @@ void Elimination_useless_code() {
                if(strcmp(quad[i].res,quad[j].op1)== 0 || strcmp(quad[i].res,quad[j].op2) == 0) used = 1;
            } 
            if(!used) {
-               printf(" Useless : %s := %s \n",quad[i].res,quad[i].op1);
+               printf(" Useless : %d - %s := %s \n",i,quad[i].res,quad[i].op1);
                removeQuad(i);
            }
            else {
@@ -766,4 +767,10 @@ void Elimination_useless_code() {
         }
         else i++;
     }
+}
+
+void Optimization() {
+    Propagation_common_expressions();
+    Propagation_copie();
+    Elimination_useless_code();
 }

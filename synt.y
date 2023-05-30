@@ -1005,9 +1005,7 @@ int main()
   afficher();
   afficher_qdr();
 
-  Propagation_common_expressions();
-  Propagation_copie();
-  Elimination_useless_code();
+  Optimization();
   
   afficher_qdr();
 

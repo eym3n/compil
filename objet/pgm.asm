@@ -23,17 +23,23 @@ CODE SEGMENT
 	ADD AX, 1h
 	MOV t0, AX
 	MOV B, AX
+	MOV B, AX
 	MOV AX, t0
+	MOV C, AX
+	MOV D, 1h
 	MOV C, AX
 	MOV D, 1h
 	MOV AX, 1h
 	ADD AX, 2h
 	MOV t2, AX
 	MOV E, AX
+<<<<<<< HEAD
 	MOV AX, t0
 	ADD AX, 5h
 	MOV t3, AX
 	MOV F, AX
+=======
+>>>>>>> 2bc1a647675aa59dca47385975f6a535d44be27d
 	MOV AH, 4Ch
 	INT 21h
 CODE ENDS
