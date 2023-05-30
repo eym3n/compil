@@ -267,6 +267,7 @@ void qdr_to_asm(FILE* fptr, int i){
                 fprintf(fptr, "\tMOV %s, AX\n", res);
             }
             else{
+                in_acc("", fptr);
                 fprintf(fptr, "\tMOV %s, AX\n", res);
                 ax = NULL;
             }
