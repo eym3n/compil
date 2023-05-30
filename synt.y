@@ -1012,7 +1012,7 @@ int main()
   int x = tc;
   generer_asm(x);
 
-    return 0;
+  return 0;
 }
 int yywrap()
 {}

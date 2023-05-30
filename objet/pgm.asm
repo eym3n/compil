@@ -7,9 +7,11 @@ DATA segment
 	C         DW	?
 	D         DW	?
 	E         DW	?
+	F         DW	?
 	t0        DW	?
 	t1        DW	?
 	t2        DW	?
+	t3        DW	?
 DATA ends
 CODE SEGMENT
 	Pgm:
@@ -25,6 +27,7 @@ CODE SEGMENT
 	MOV C, AX
 	MOV D, 1h
 	MOV C, AX
+	MOV D, 1h
 	MOV AX, 1h
 	ADD AX, 2h
 	MOV E, AX

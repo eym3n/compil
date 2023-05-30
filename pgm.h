@@ -268,7 +268,7 @@ void qdr_to_asm(FILE* fptr, int i){
             }
             else{
                 fprintf(fptr, "\tMOV %s, AX\n", res);
-                ax = strdup(res);
+                ax = NULL;
             }
         }
     }

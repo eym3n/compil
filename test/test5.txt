@@ -5,12 +5,14 @@ Pgm{
         INTEGER C;
         INTEGER D;
         INTEGER E;
+        INTEGER F;
     }
     CODE{
         A = 1;
         B = A + 1;
         C = A + 1;
         D = A;
-        E = D + 2; 
+        E = D + 2;
+        F = C + 5;
     }
 }
